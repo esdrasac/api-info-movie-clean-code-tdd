@@ -1,12 +1,21 @@
+const response = require('../helpers/http-response')
+const ValidatorError = require('../errors/validator.error')
+
 class MovieController {
-  constructor(){
+  constructor(validator){
+    this.validator = validator
 
   }
 
   async storeInformationMovie(event) {
-  
-    return {
-      statusCode: 400
+    const shapeSchema = [
+      {field: 'idMovie', type: 'number', required: true}
+    ]
+
+    const schema = await this.validator.validate(shapeSchema, event.body)
+
+    if(!schema.isValid) {
+      return response.badRequest(new ValidatorError(schema.err))
     }
   }
 }
