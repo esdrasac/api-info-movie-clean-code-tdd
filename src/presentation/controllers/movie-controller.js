@@ -2,8 +2,9 @@ const response = require('../helpers/http-response')
 const { ValidatorError } = require('../errors')
 
 class MovieController {
-  constructor(validator){
-    this.validator = validator
+  constructor(validator, movieUseCase){
+    this.validator = validator,
+    this.movieUseCase = movieUseCase
 
   }
 
@@ -18,6 +19,16 @@ class MovieController {
       if(!schema.isValid) {
         return response.badRequest(new ValidatorError(schema.err))
       }
+
+      const { idMovie } = event.body
+
+      const movie = await this.movieUseCase.addMovieById(idMovie)
+
+      if(!movie) {
+        return response.notFounded('Can not found movie')
+      }
+
+      return response.success(movie)
 
     } catch(err) { 
       return response.serverError(err)
