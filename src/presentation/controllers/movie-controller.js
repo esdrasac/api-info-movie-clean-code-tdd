@@ -22,7 +22,7 @@ class MovieController {
 
       const { idMovie } = event.body
 
-      const movie = await this.movieUseCase.addMovieById(idMovie)
+      const movie = await this.movieUseCase.getMovieInfos(idMovie)
 
       if(!movie) {
         return response.notFounded('Can not found movie')
