@@ -1,7 +1,7 @@
 class ServerError extends Error {
   constructor(err) {
     super(`Internal error: ${err}`)
-    this.name('ServerError')
+    this.name = 'ServerError'
   }
 }
 
