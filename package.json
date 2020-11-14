@@ -1,0 +1,11 @@
+{
+  "name": "api-info-movie",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/esdrasac/api-info-movie-clean-code-tdd.git",
+  "author": "Esdras Aguilar <esdras_ac2010@hotmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "git-commit-msg-linter": "^3.0.0"
+  }
+}
