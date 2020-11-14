@@ -15,9 +15,11 @@ const makeSut = () => {
 
 const makeMovieUseCase = () => {
   class MovieUseCaseStub {
-    addMovieById(idMovie) {
+    getMovieInfos(idMovie) {
       if(idMovie === movieSchema.id){
-        return movieSchema
+        this.movie = movieSchema
+
+        return this.movie
       }
       return null
     }
