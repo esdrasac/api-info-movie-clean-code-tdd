@@ -1,4 +1,4 @@
-const { ServerError, UnauthorizedError } = require('../errors')
+const { ServerError } = require('../errors')
 
 class HttpResponse {
   static success(body) {
@@ -17,11 +17,11 @@ class HttpResponse {
     }
   }
 
-  static unauthorized() {
+  static notFounded(error) {
     return {
-      statusCode: 401,
+      statusCode: 404,
       body: {
-        error: new UnauthorizedError()
+        error: error
       }
     }
   }
