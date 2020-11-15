@@ -25,5 +25,6 @@
     "test:integration": "yarn test -- --watch -c jest-integration.config.js",
     "test:staged": "yarn test -- --findRelatedTests",
     "test:coverage": "yarn jest --coverage"
-  }
+  },
+  "dependencies": {}
 }
