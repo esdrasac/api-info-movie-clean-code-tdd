@@ -1,6 +1,7 @@
 class MovieUseCase {
-  constructor({ MovieExternalRepository, Validator }) {
+  constructor({ MovieExternalRepository, MovieInternalRepository, Validator }) {
     this.movieExternalRepository = MovieExternalRepository
+    this.movieInternalRepository = MovieInternalRepository
     this.validator = Validator
   }
 
@@ -20,9 +21,9 @@ class MovieUseCase {
 
   async addMovie(movie) {
     const shapeSchema = [
-      {field: 'id', type: 'number', required: true},
-      {field: 'original_title', type: 'string', required: true},
-      {field: 'translations', type: 'object', required: true}
+      {name: 'id', type: 'number', required: true},
+      {name: 'original_title', type: 'string', required: true},
+      {name: 'translations', type: 'object', required: true}
     ]
 
     const schema = await this.validator.validate(shapeSchema, movie)
@@ -31,8 +32,11 @@ class MovieUseCase {
       return schema
     }
 
+    const addedMovie = await this.movieInternalRepository.create(movie)
+
     return {
-      isValid: true
+      isValid: true,
+      addedMovie
     }
   }
 }

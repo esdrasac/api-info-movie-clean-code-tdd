@@ -11,7 +11,7 @@ class MovieController {
   async storeInformationMovie(event) {
     try {
       const shapeSchema = [
-        {field: 'idMovie', type: 'number', required: true}
+        { name: 'idMovie', type: 'number', required: true }
       ]
   
       const schema = await this.validator.validate(shapeSchema, event.body)
@@ -37,7 +37,6 @@ class MovieController {
       return response.success(movie)
 
     } catch(err) { 
-      console.log(err)
       return response.serverError(err)
     }
   }

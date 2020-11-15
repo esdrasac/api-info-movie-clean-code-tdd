@@ -7,9 +7,9 @@ exports.makeValidatorStub = () => {
       }
 
       for(const each of schema) {
-        if(!eventBody[each.field]){
+        if(!eventBody[each.name]){
           validation.isValid = false
-          validation.err[each.field] = 'Dados Inválidos' 
+          validation.err[each.name] = 'Dados Inválidos' 
         }
       }
 
