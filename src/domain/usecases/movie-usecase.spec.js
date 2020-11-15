@@ -7,14 +7,26 @@ const ValidatorError  = require('../../utils/errors/validator-error')
 
 const makeSut = () => {
   const MovieExternalRepository = makeMovieExternalRepository()
+  const MovieInternalRepository = makeMovieInternalRepository()
   const Validator = makeValidatorStub()
-  const sut = new MovieUseCase({ MovieExternalRepository, Validator })
+  const sut = new MovieUseCase({ MovieExternalRepository, MovieInternalRepository, Validator })
 
   return {
     sut,
     Validator,
-    MovieExternalRepository
+    MovieExternalRepository,
+    MovieInternalRepository
   }
+}
+
+const makeMovieInternalRepository = () => {
+  class MovieInternalRepositoryStub {
+    async create(movie) {
+      return true
+    }
+  }
+
+  return new MovieInternalRepositoryStub()
 }
 
 const makeMovieExternalRepository = () => {
@@ -68,14 +80,27 @@ describe('Movie UseCase', () => {
     expect(movieExternalRepoParams).toHaveBeenCalledWith(id)
   })
 
-  test('[Function: addMovie] Should return true from if movie is valid', async () => {
+  test('[Function: addMovie] Should return false if internal repo can not add movie', async () => {
+    const { sut, MovieInternalRepository } = makeSut()
+
+    jest.spyOn(MovieInternalRepository, 'create').mockImplementationOnce(false)
+
+    const movie = {}
+
+    const addMovie = await sut.addMovie(movie)
+
+    expect(addMovie.addedMovie).toBeFalsy()
+  })
+
+  test('[Function: addMovie] Should return true if movie is valid', async () => {
     const { sut } = makeSut()
 
     const movie = movieSchema
 
     const addMovie = await sut.addMovie(movie)
 
-    expect(addMovie).toBeTruthy()
+    expect(addMovie.addedMovie).toBeTruthy()
+    expect(addMovie.isValid).toBeTruthy()
   })
 
   test('[Function: addMovie] Should return false from if movie is not valid', async () => {
