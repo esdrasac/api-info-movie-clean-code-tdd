@@ -1,15 +1,18 @@
 const MovieController = require('./movie-controller')
-const { ValidatorError, ServerError } = require('../errors')
-const movieSchema = require('../test/schemas/movie.json')
+const { ServerError } = require('../errors')
+const ValidatorError = require('../../utils/errors/validator-error')
+const movieSchema = require('../../test/schemas/movie.json')
+const { makeValidatorStub } = require('../../test/mocks/validator-mock')
 
 const makeSut = () => {
-  const validatorStub = makeValidatorStub()
-  const movieAuthUseCase = makeMovieUseCase()
-  const sut = new MovieController(validatorStub, movieAuthUseCase)
+  const Validator = makeValidatorStub()
+  const MovieUseCase = makeMovieUseCase()
+  const sut = new MovieController({ Validator, MovieUseCase })
 
   return {
     sut,
-    validatorStub
+    Validator,
+    MovieUseCase
   }
 }
 
@@ -23,31 +26,15 @@ const makeMovieUseCase = () => {
       }
       return null
     }
-  }
 
-  return new MovieUseCaseStub()
-}
-
-const makeValidatorStub = () => {
-  class ValidatorStub {
-    validate(schema, eventBody) {
-      const validation = {
-        isValid: true,
-        err: {}
+    addMovie(movie) {
+      return {
+        isValid: true
       }
-
-      for(const each of schema) {
-        if(!eventBody[each.field]){
-          validation.isValid = false
-          validation.err[each.field] = 'Dados Inválidos' 
-        }
-      }
-
-      return validation
     }
   }
 
-  return new ValidatorStub()
+  return new MovieUseCaseStub()
 }
 
 describe('Movie Controller', () => {
@@ -93,5 +80,33 @@ describe('Movie Controller', () => {
 
     const res = await sut.storeInformationMovie(event)
     expect(res.statusCode).toBe(404)
+  })
+
+  test('Should return 500 if can not add movie', async () => {
+    const { sut, MovieUseCase } = makeSut()
+    
+    jest.spyOn(MovieUseCase, 'addMovie').mockReturnValue({ isvalid: false })
+
+    const event = {
+      body: {
+        idMovie: 238
+      }
+    }
+
+    const res = await sut.storeInformationMovie(event)
+    expect(res.statusCode).toBe(400)
+  })
+
+  test('Should return 200 if movie is added', async () => {
+    const { sut } = makeSut()
+    
+    const event = {
+      body: {
+        idMovie: 238
+      }
+    }
+
+    const res = await sut.storeInformationMovie(event)
+    expect(res.statusCode).toBe(200)
   })
 })

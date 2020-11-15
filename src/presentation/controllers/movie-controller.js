@@ -1,10 +1,10 @@
 const response = require('../helpers/http-response')
-const { ValidatorError } = require('../errors')
+const ValidatorError = require('../../utils/errors/validator-error')
 
 class MovieController {
-  constructor(validator, movieUseCase){
-    this.validator = validator,
-    this.movieUseCase = movieUseCase
+  constructor({ Validator, MovieUseCase }){
+    this.validator = Validator,
+    this.movieUseCase = MovieUseCase
 
   }
 
@@ -23,14 +23,21 @@ class MovieController {
       const { idMovie } = event.body
 
       const movie = await this.movieUseCase.getMovieInfos(idMovie)
-
+      
       if(!movie) {
         return response.notFounded('Can not found movie')
+      }
+      
+      const isValidMovie = await this.movieUseCase.addMovie(idMovie)
+      
+      if(!isValidMovie.isValid) {
+        return response.badRequest(new ValidatorError('Invalid movie'))
       }
 
       return response.success(movie)
 
     } catch(err) { 
+      console.log(err)
       return response.serverError(err)
     }
   }
