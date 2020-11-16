@@ -1,8 +1,8 @@
 class MovieUseCase {
-  constructor({ TheMovieDbRepository, MovieInternalRepository, Validator }) {
-    this.theMovieDbRepository = TheMovieDbRepository
-    this.movieInternalRepository = MovieInternalRepository
-    this.validator = Validator
+  constructor({ theMovieDbRepository, movieInternalRepository, validator }) {
+    this.theMovieDbRepository = theMovieDbRepository
+    this.movieInternalRepository = movieInternalRepository
+    this.validator = validator
   }
 
   async getMovieInfos(idMovie) {

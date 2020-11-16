@@ -2,9 +2,9 @@ const response = require('../helpers/http-response')
 const ValidatorError = require('../../utils/errors/validator-error')
 
 class MovieController {
-  constructor({ Validator, MovieUseCase }){
-    this.validator = Validator,
-    this.movieUseCase = MovieUseCase
+  constructor({ validator, movieUseCase }){
+    this.validator = validator,
+    this.movieUseCase = movieUseCase
 
   }
 
