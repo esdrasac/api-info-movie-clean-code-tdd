@@ -1,5 +1,10 @@
-const app = require('./app')
+const MongoHelper = require('../infra/helpers/mongo-db-helper')
 
-app.listen(process.env.PORT, () => {
-  console.log('app listening on port 5000')
-})
+MongoHelper.connect()
+  .then(() => {
+    const app = require('./app')
+    app.listen(process.env.PORT, () => {
+      console.log('app listening on port 5000')
+    })
+  })
+

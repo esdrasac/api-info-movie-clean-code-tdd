@@ -7,13 +7,19 @@ module.exports = {
     if(this.client){
       return
     }
-    
-    this.client = await mongoose.connect(env.MONGO_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    })
 
+    try {
+      this.client = await mongoose.connect(env.MONGO_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      })
+      
+    } catch (error) {
+      console.log(error)
+    }
     
+
+    console.log(this.client)
   },
 
   async disconnect() {
@@ -22,7 +28,7 @@ module.exports = {
   },
 
   async getOrCreateCollection(collection, schema) {
-    await this.connect(process.env.MONGO_URL)
+    await this.connect()
 
     try {
       return mongoose.model(collection)
