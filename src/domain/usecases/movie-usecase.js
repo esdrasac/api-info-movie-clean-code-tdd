@@ -1,18 +1,18 @@
 class MovieUseCase {
-  constructor({ MovieExternalRepository, MovieInternalRepository, Validator }) {
-    this.movieExternalRepository = MovieExternalRepository
+  constructor({ TheMovieDbRepository, MovieInternalRepository, Validator }) {
+    this.theMovieDbRepository = TheMovieDbRepository
     this.movieInternalRepository = MovieInternalRepository
     this.validator = Validator
   }
 
   async getMovieInfos(idMovie) {
-    let movieDetails = await this.movieExternalRepository.getMovieDetailsById(idMovie)
+    let movieDetails = await this.theMovieDbRepository.getMovieDetailsById(idMovie)
 
     if(!movieDetails) {
       return null
     }
 
-    const movieTranslations = await this.movieExternalRepository.getMovieTranslations(idMovie)
+    const movieTranslations = await this.theMovieDbRepository.getMovieTranslations(idMovie)
 
     movieDetails['translations'] = movieTranslations.translations
 

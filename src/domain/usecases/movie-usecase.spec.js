@@ -6,15 +6,15 @@ const movieSchema = require('../../test/schemas/movie.json')
 const ValidatorError  = require('../../utils/errors/validator-error')
 
 const makeSut = () => {
-  const MovieExternalRepository = makeMovieExternalRepository()
+  const TheMovieDbRepository = makeTheMovieDbRepository()
   const MovieInternalRepository = makeMovieInternalRepository()
   const Validator = makeValidatorStub()
-  const sut = new MovieUseCase({ MovieExternalRepository, MovieInternalRepository, Validator })
+  const sut = new MovieUseCase({ TheMovieDbRepository, MovieInternalRepository, Validator })
 
   return {
     sut,
     Validator,
-    MovieExternalRepository,
+    TheMovieDbRepository,
     MovieInternalRepository
   }
 }
@@ -29,8 +29,8 @@ const makeMovieInternalRepository = () => {
   return new MovieInternalRepositoryStub()
 }
 
-const makeMovieExternalRepository = () => {
-  class MovieExternalRepositoryStub {
+const makeTheMovieDbRepository = () => {
+  class TheMovieDbRepositoryStub {
     async getMovieDetailsById(idMovie) {
       if(idMovie === movieDatailSchema.id) {
         this.idMovie = idMovie
@@ -51,14 +51,14 @@ const makeMovieExternalRepository = () => {
     }
   }
 
-  return new MovieExternalRepositoryStub()
+  return new TheMovieDbRepositoryStub()
 }
 
 describe('Movie UseCase', () => {
   test('[Function: getMovieInfos] Should call MovieExternalRepository with valid id', async () => {
-    const { sut, MovieExternalRepository } = makeSut()
+    const { sut, TheMovieDbRepository } = makeSut()
 
-    const movieExternalRepoParams = jest.spyOn(MovieExternalRepository, 'getMovieDetailsById')
+    const movieExternalRepoParams = jest.spyOn(TheMovieDbRepository, 'getMovieDetailsById')
 
     const id = 238
 
@@ -68,9 +68,9 @@ describe('Movie UseCase', () => {
   })
 
   test('[Function: getMovieInfos] Should return null from MovieExternalRepository if movie is not founded', async () => {
-    const { sut, MovieExternalRepository } = makeSut()
+    const { sut, TheMovieDbRepository } = makeSut()
 
-    const movieExternalRepoParams = jest.spyOn(MovieExternalRepository, 'getMovieDetailsById')
+    const movieExternalRepoParams = jest.spyOn(TheMovieDbRepository, 'getMovieDetailsById')
       .mockImplementationOnce(null)
 
     const id = 238
