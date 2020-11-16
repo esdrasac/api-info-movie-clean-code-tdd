@@ -28,6 +28,7 @@
     "test:ci": "yarn test -- --coverage"
   },
   "dependencies": {
+    "axios": "^0.21.0",
     "mongoose": "^5.10.14"
   }
 }
