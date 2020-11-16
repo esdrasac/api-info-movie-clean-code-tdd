@@ -11,7 +11,7 @@ class TheMovieDbRepo {
         api_key: '42dbcd306a0cab5174caf331b401355f'
       }
     })
-
+    
     return movie.data
   }
 

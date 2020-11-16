@@ -1,21 +1,14 @@
 const mongoose = require('mongoose')
 const movieModel = require('../../domain/models/Movie')
-
-const Models = [
-  {
-    name: 'movies',
-    schema: movieModel
-  }
-]
+const env = require('../../main/config/env')
 
 module.exports = {
-  async connect(uri) {
+  async connect() {
     if(this.client){
       return
     }
     
-    this.uri = uri
-    this.client = await mongoose.connect(this.uri, {
+    this.client = await mongoose.connect(env.MONGO_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     })
@@ -29,7 +22,7 @@ module.exports = {
   },
 
   async getOrCreateCollection(collection, schema) {
-    await this.connect(this.uri)
+    await this.connect(process.env.MONGO_URL)
 
     try {
       return mongoose.model(collection)

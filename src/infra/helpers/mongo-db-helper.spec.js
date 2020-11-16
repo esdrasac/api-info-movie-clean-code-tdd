@@ -3,7 +3,7 @@ const movieSchema = require('../../domain/models/Movie')
 
 describe('Mongo helper', () => {
   beforeAll(async () => {
-    await sut.connect('mongodb://localhost:27017/api-info-movie')
+    await sut.connect()
   })
 
   afterAll(async () => {
@@ -19,7 +19,7 @@ describe('Mongo helper', () => {
   })
 
   test('Should connect when client is disconnect', async () => {
-    await sut.connect('mongodb://localhost:27017/api-info-movie')
+    await sut.connect()
     expect(sut.client).toBeTruthy()
   })
 })

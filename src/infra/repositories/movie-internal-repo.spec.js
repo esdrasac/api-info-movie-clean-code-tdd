@@ -11,8 +11,7 @@ const makeSut = () => {
 
 describe('Movie Internal Repo', () => {
   beforeAll(async () => {
-    await MongoHelper.connect('mongodb://localhost:27017/api-info-movie')
-    // await MongoHelper.initModels()
+    await MongoHelper.connect()
     movieModel = await MongoHelper.getOrCreateCollection('movies', movieSchema)
   })
 

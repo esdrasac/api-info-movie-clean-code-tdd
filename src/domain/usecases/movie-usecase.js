@@ -27,11 +27,10 @@ class MovieUseCase {
     ]
 
     const schema = await this.validator.validate(shapeSchema, movie)
-
     if(!schema.isValid) {
       return schema
     }
-
+    
     const addedMovie = await this.movieInternalRepository.create(movie)
 
     return {

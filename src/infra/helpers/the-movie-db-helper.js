@@ -1,5 +1,6 @@
 const axios = require('axios').default
+const env = require('../../main/config/env')
 
 exports.api = axios.create({
-  baseURL: 'https://api.themoviedb.org/3/'
+  baseURL: env.THE_MOVIE_DB_URL
 })

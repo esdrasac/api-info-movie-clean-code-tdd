@@ -3,7 +3,7 @@ const ValidatorError = require('../../utils/errors/validator-error')
 
 class MovieController {
   constructor({ validator, movieUseCase }){
-    this.validator = validator,
+    this.validator = validator
     this.movieUseCase = movieUseCase
 
   }
@@ -13,23 +13,22 @@ class MovieController {
       const shapeSchema = [
         { name: 'idMovie', type: 'number', required: true }
       ]
-  
+
       const schema = await this.validator.validate(shapeSchema, event.body)
-  
+      
       if(!schema.isValid) {
         return response.badRequest(new ValidatorError(schema.err))
       }
-
+      
       const { idMovie } = event.body
-
+      
       const movie = await this.movieUseCase.getMovieInfos(idMovie)
       
       if(!movie) {
         return response.notFounded('Can not found movie')
       }
       
-      const isValidMovie = await this.movieUseCase.addMovie(idMovie)
-      
+      const isValidMovie = await this.movieUseCase.addMovie(movie)
       if(!isValidMovie.isValid) {
         return response.badRequest(new ValidatorError('Invalid movie'))
       }
