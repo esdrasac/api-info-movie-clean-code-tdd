@@ -1,12 +1,26 @@
 const mongoose = require('mongoose')
+const movieModel = require('../../domain/models/Movie')
+
+const Models = [
+  {
+    name: 'movies',
+    schema: movieModel
+  }
+]
 
 module.exports = {
   async connect(uri) {
+    if(this.client){
+      return
+    }
+    
     this.uri = uri
     this.client = await mongoose.connect(this.uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     })
+
+    
   },
 
   async disconnect() {
@@ -14,14 +28,13 @@ module.exports = {
     this.client = null
   },
 
-  async getOrCreateCollection(collection, Schema) {
-    if(!this.client) {
-      await this.connect(this.uri)
-    }
-    
-    const schema = this.client.Schema(Schema)
-    const model = this.client.model(collection, schema)
+  async getOrCreateCollection(collection, schema) {
+    await this.connect(this.uri)
 
-    return model
+    try {
+      return mongoose.model(collection)
+    } catch (err) {
+      return mongoose.model(collection, schema)
+    }
   }
 }
