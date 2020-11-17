@@ -1,0 +1,185 @@
+openapi: 3.0.0
+info:
+  description: >
+    # Introduction
+      This api is able to search for films from a public database and find its translations and save it in a database in its own docker container, and was developed by Esdras Aguilar using TDD and Clean Architecture. The source code is available in [GitHub](https://github.com/esdrasac/api-info-movie-clean-code-tdd)
+    # Authentication
+       Authentication header:
+      - x-api-key: 7e5ba2c8f5e9343f0a2ac5ba4fee45d7
+  version: 2.0.0
+  title: Info Movie API
+  contact:
+    email: esdras_ac2010@hotmail.com
+    url: https://github.com/esdrasac/api-info-movie-clean-code-tdd
+  x-logo:
+    url: ../assets/movie.png
+    altText: Info Movie API
+
+tags:
+  - name: Movie
+    description: 
+      The lead is the potential client. In these methods, you can create, recuperate
+      and join pieces of information about the lead, like the address and products of interest.
+
+x-tagGroups:
+  - name: Controllers
+    tags:
+      - Movie
+paths:
+  /add-movie:
+    post:
+      tags:
+        - Movie
+      summary: Add Movie
+      description: Searche and add a movie and its translations.
+      operationId: add-movie
+      requestBody:
+        $ref: "#/components/requestBodies/AddMovie"
+      responses:
+        "200":
+          description: Success operation
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/requestBodies/ResponseSuccess"
+        "400":
+          description: Bad request
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/requestBodies/BadRequest"
+        "401":
+          description: Unauthorized
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/requestBodies/UnauthorizedError"
+        "404":
+          description: Not Founded
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/requestBodies/NotFoundedError"
+        "500":
+          description: Server Error
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/requestBodies/ServerError"
+      security:
+        - x-api-key:
+          - Token
+
+servers:
+  - url: http://localhost:5000/
+    description: default server
+
+components:
+  requestBodies:
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+
+    AddMovie:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/add-movie"
+      description: Add a new movie
+      required: true
+
+    ResponseSuccess:
+      type: object
+      properties:
+        statusCode:
+          description: Status Code
+          type: string
+          example: 200
+        message:
+          description: Returns movie object
+          type: string
+
+    ValidatorError:
+      type: object
+      properties:
+        statusCode:
+          description: Status Code
+          type: string
+          example: 400
+        message:
+          description: Validation Fails
+          type: string
+          example: Validation Fails
+
+    ServerError:
+      type: object
+      properties:
+        statusCode:
+          description: Status Code
+          type: string
+          example: 500
+        message:
+          description: Validation Fails
+          type: string
+          example: Validation Fails
+
+    NotFoundedError:
+      type: object
+      properties:
+        statusCode:
+          description: Status Code
+          type: string
+          example: 404
+        message:
+          description: Validation Fails
+          type: string
+          example: Validation Fails
+
+    BadRequest:
+      type: object
+      properties:
+        statusCode:
+          description: Status Code
+          type: string
+          example: 400
+        message:
+          description: BadRequest
+          type: string
+          example: BadRequest
+
+    UnauthorizedError:
+      type: object
+      properties:
+        statusCode:
+          description: Status Code
+          type: string
+          example: 401
+        message:
+          description: Unauthorized
+          type: string
+          example: Unauthorized
+
+  securitySchemas:
+    x-api-key:
+      description: Hash
+      type: apiKey
+      name: x-api-key
+      in: header
+
+  schemas:
+    add-movie:
+      type: object
+      required:
+        - idMovie
+      properties:
+        idMovie:
+          description: Desired movie id
+          type: integer
+          example: 238

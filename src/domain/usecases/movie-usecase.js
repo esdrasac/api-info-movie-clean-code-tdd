@@ -1,18 +1,18 @@
 class MovieUseCase {
-  constructor({ MovieExternalRepository, MovieInternalRepository, Validator }) {
-    this.movieExternalRepository = MovieExternalRepository
-    this.movieInternalRepository = MovieInternalRepository
-    this.validator = Validator
+  constructor({ theMovieDbRepository, movieInternalRepository, validator }) {
+    this.theMovieDbRepository = theMovieDbRepository
+    this.movieInternalRepository = movieInternalRepository
+    this.validator = validator
   }
 
   async getMovieInfos(idMovie) {
-    let movieDetails = await this.movieExternalRepository.getMovieDetailsById(idMovie)
+    let movieDetails = await this.theMovieDbRepository.getMovieDetailsById(idMovie)
 
     if(!movieDetails) {
       return null
     }
 
-    const movieTranslations = await this.movieExternalRepository.getMovieTranslations(idMovie)
+    const movieTranslations = await this.theMovieDbRepository.getMovieTranslations(idMovie)
 
     movieDetails['translations'] = movieTranslations.translations
 
@@ -27,11 +27,10 @@ class MovieUseCase {
     ]
 
     const schema = await this.validator.validate(shapeSchema, movie)
-
     if(!schema.isValid) {
       return schema
     }
-
+    
     const addedMovie = await this.movieInternalRepository.create(movie)
 
     return {
