@@ -50,8 +50,12 @@ We recommend using Yarn, but you can use npm
       docker-compose up
       ```
     
-### :minidisc: DOCs
+## :minidisc: DOCs
   You can see the [docs](https://github.com/esdrasac/api-info-movie-clean-code-tdd/blob/master/public/docs/) and Insomnia Collection for details.
+
+## :minidisc: Units and Integrations tests  
+  This application is 100% tested ![tested](https://github.com/esdrasac/api-info-movie-clean-code-tdd/blob/master/public/assets/tests.png)
+
 
 
 ## :hammer: Built With
@@ -61,10 +65,6 @@ We recommend using Yarn, but you can use npm
 * [ExpresJS](https://expressjs.com/) - Web Framework;
 * [MongooseJS](https://mongoosejs.com/) - Used to manage NoSQL data(ODM);
 * [Jest](https://jestjs.io/) - Used to tests;
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://github.com/esdrasac/chatbot/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 
