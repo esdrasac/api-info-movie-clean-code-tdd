@@ -55,7 +55,7 @@ describe('Movie Controller', () => {
 
     const res = await sut.storeInformationMovie(event)
     expect(res.statusCode).toBe(500)
-    expect(res.body.error).toBe(new ServerError().message)
+    expect(res.body.error).toBe(new ServerError('TypeError: Cannot read property \'idMovie\' of undefined').message)
   })
 
   test('Should return 200 if movie is founded', async () => {

@@ -8,18 +8,10 @@ module.exports = {
       return
     }
 
-    try {
-      this.client = await mongoose.connect(env.MONGO_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      })
-      
-    } catch (error) {
-      console.log(error)
-    }
-    
-
-    console.log(this.client)
+    this.client = await mongoose.connect(env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    })
   },
 
   async disconnect() {

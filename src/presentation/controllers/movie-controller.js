@@ -9,7 +9,6 @@ class MovieController {
   }
 
   async storeInformationMovie(event) {
-    console.log(event)
     try {
       const shapeSchema = [
         { name: 'idMovie', type: 'number', required: true }
