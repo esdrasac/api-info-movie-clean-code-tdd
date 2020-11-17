@@ -6,16 +6,16 @@ const movieSchema = require('../../test/schemas/movie.json')
 const ValidatorError  = require('../../utils/errors/validator-error')
 
 const makeSut = () => {
-  const MovieExternalRepository = makeMovieExternalRepository()
-  const MovieInternalRepository = makeMovieInternalRepository()
-  const Validator = makeValidatorStub()
-  const sut = new MovieUseCase({ MovieExternalRepository, MovieInternalRepository, Validator })
+  const theMovieDbRepository = makeTheMovieDbRepository()
+  const movieInternalRepository = makeMovieInternalRepository()
+  const validator = makeValidatorStub()
+  const sut = new MovieUseCase({ theMovieDbRepository, movieInternalRepository, validator })
 
   return {
     sut,
-    Validator,
-    MovieExternalRepository,
-    MovieInternalRepository
+    validator,
+    theMovieDbRepository,
+    movieInternalRepository
   }
 }
 
@@ -29,8 +29,8 @@ const makeMovieInternalRepository = () => {
   return new MovieInternalRepositoryStub()
 }
 
-const makeMovieExternalRepository = () => {
-  class MovieExternalRepositoryStub {
+const makeTheMovieDbRepository = () => {
+  class TheMovieDbRepositoryStub {
     async getMovieDetailsById(idMovie) {
       if(idMovie === movieDatailSchema.id) {
         this.idMovie = idMovie
@@ -51,14 +51,14 @@ const makeMovieExternalRepository = () => {
     }
   }
 
-  return new MovieExternalRepositoryStub()
+  return new TheMovieDbRepositoryStub()
 }
 
 describe('Movie UseCase', () => {
   test('[Function: getMovieInfos] Should call MovieExternalRepository with valid id', async () => {
-    const { sut, MovieExternalRepository } = makeSut()
+    const { sut, theMovieDbRepository } = makeSut()
 
-    const movieExternalRepoParams = jest.spyOn(MovieExternalRepository, 'getMovieDetailsById')
+    const movieExternalRepoParams = jest.spyOn(theMovieDbRepository, 'getMovieDetailsById')
 
     const id = 238
 
@@ -68,9 +68,9 @@ describe('Movie UseCase', () => {
   })
 
   test('[Function: getMovieInfos] Should return null from MovieExternalRepository if movie is not founded', async () => {
-    const { sut, MovieExternalRepository } = makeSut()
+    const { sut, theMovieDbRepository } = makeSut()
 
-    const movieExternalRepoParams = jest.spyOn(MovieExternalRepository, 'getMovieDetailsById')
+    const movieExternalRepoParams = jest.spyOn(theMovieDbRepository, 'getMovieDetailsById')
       .mockImplementationOnce(null)
 
     const id = 238
@@ -81,9 +81,9 @@ describe('Movie UseCase', () => {
   })
 
   test('[Function: addMovie] Should return false if internal repo can not add movie', async () => {
-    const { sut, MovieInternalRepository } = makeSut()
+    const { sut, movieInternalRepository } = makeSut()
 
-    jest.spyOn(MovieInternalRepository, 'create').mockImplementationOnce(false)
+    jest.spyOn(movieInternalRepository, 'create').mockImplementationOnce(false)
 
     const movie = {}
 
