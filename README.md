@@ -44,11 +44,11 @@ We recommend using Yarn, but you can use npm
     docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' db
     ```
 
-    *And finally:
+  * And finally:
 
-      ```
-      docker-compose up
-      ```
+    ```
+    docker-compose up
+    ```
     
 ## :minidisc: DOCs
   You can see the [docs](https://github.com/esdrasac/api-info-movie-clean-code-tdd/blob/master/public/docs/) and Insomnia Collection for details.
