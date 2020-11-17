@@ -26,11 +26,11 @@ class HttpResponse {
     }
   }
 
-  static serverError() {
+  static serverError(error) {
     return {
       statusCode: 500,
       body: {
-        error: new ServerError().message
+        error: new ServerError(error).message
       }
     }
   }

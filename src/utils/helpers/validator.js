@@ -11,8 +11,6 @@ class Validator {
         schema['isValid'] = false
       }
     })
-
-    console.log(schema)
     
     return schema
   }

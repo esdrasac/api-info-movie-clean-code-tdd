@@ -5,14 +5,14 @@ const movieSchema = require('../../test/schemas/movie.json')
 const { makeValidatorStub } = require('../../test/mocks/validator-mock')
 
 const makeSut = () => {
-  const Validator = makeValidatorStub()
-  const MovieUseCase = makeMovieUseCase()
-  const sut = new MovieController({ Validator, MovieUseCase })
+  const validator = makeValidatorStub()
+  const movieUseCase = makeMovieUseCase()
+  const sut = new MovieController({ validator, movieUseCase })
 
   return {
     sut,
-    Validator,
-    MovieUseCase
+    validator,
+    movieUseCase
   }
 }
 
@@ -55,7 +55,7 @@ describe('Movie Controller', () => {
 
     const res = await sut.storeInformationMovie(event)
     expect(res.statusCode).toBe(500)
-    expect(res.body.error).toBe(new ServerError().message)
+    expect(res.body.error).toBe(new ServerError('TypeError: Cannot read property \'idMovie\' of undefined').message)
   })
 
   test('Should return 200 if movie is founded', async () => {
@@ -83,9 +83,9 @@ describe('Movie Controller', () => {
   })
 
   test('Should return 500 if can not add movie', async () => {
-    const { sut, MovieUseCase } = makeSut()
+    const { sut, movieUseCase } = makeSut()
     
-    jest.spyOn(MovieUseCase, 'addMovie').mockReturnValue({ isvalid: false })
+    jest.spyOn(movieUseCase, 'addMovie').mockReturnValue({ isvalid: false })
 
     const event = {
       body: {
